@@ -31,9 +31,10 @@ train = pd.read_csv(data_file)
 
 if clean:
   logger.info("Cleaning training data")
-  for i in tqdm(range(30), desc="Limpiando", ncols=70):
+  for i in tqdm(range(50), desc="Limpiando", ncols=50):
+    if i == 49:
       train = cleaning.clean_train_input(train)
-      time.sleep(0.1)
+    time.sleep(0.1)
 
 X = train.values[:,:-1]
 y = train["RENDIMIENTO_GLOBAL"].values
@@ -42,8 +43,9 @@ Xtr, Xts, ytr, yts = train_test_split(X,y)
 
 logger.info("Fitting model")
 model = RandomForestClassifier(n_estimators=350, max_depth=20)
-for i in tqdm(range(30), desc="training", ncols=70):
-  model.fit(Xtr,ytr)
+for i in tqdm(range(50), desc="training", ncols=50):
+  if i == 49:
+    model.fit(Xtr,ytr)
   time.sleep(0.1)
 
 # save the model
