@@ -4,6 +4,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from loguru import logger
 import os
+from tqdm import tqdm
+import time
 import pandas as pd
 import pickle
 import cleaning
@@ -29,7 +31,9 @@ train = pd.read_csv(data_file)
 
 if clean:
   logger.info("Cleaning training data")
-  train = cleaning.clean_train_input(train)
+  for i in tqdm(range(30), desc="Limpiando", ncols=70):
+      train = cleaning.clean_train_input(train)
+      time.sleep(0.1)
 
 X = train.values[:,:-1]
 y = train["RENDIMIENTO_GLOBAL"].values
@@ -38,7 +42,9 @@ Xtr, Xts, ytr, yts = train_test_split(X,y)
 
 logger.info("Fitting model")
 model = RandomForestClassifier(n_estimators=350, max_depth=20)
-model.fit(Xtr,ytr)
+for i in tqdm(range(30), desc="training", ncols=70):
+  model.fit(Xtr,ytr)
+  time.sleep(0.1)
 
 # save the model
 with open(model_file, "wb") as f:
