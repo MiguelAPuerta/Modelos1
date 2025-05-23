@@ -11,7 +11,7 @@ WORKDIR /app
 COPY train.py predict.py cleaning.py train.csv test.csv ./
 
 # Instalar bibliotecas Python sin caché para reducir tamaño
-RUN pip install --no-cache-dir numpy pandas scikit-learn loguru tqdm
+RUN pip install --no-cache-dir numpy pandas scikit-learn loguru
 
 # Nota: No se define CMD para permitir que el usuario ejecute manualmente
 # el script deseado al correr el contenedor, por ejemplo:
