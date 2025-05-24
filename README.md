@@ -6,8 +6,18 @@ Para la ejecucion de la primera fase solo se debera de ejecutar todo el notebook
 
 # Fase 2
 
-docker build -t train-predict .  
+Descargar la carpeta de la fase dos, dentro de esta misma se deberan colocar train.csv y test.csv que se dan como ejemplo para la competición, estos se pueden encontrar en:
+https://www.kaggle.com/competitions/udea-ai4eng-20241/data
 
-docker run --rm -v %cd%:/app --name train-predict train-predict python train.py --data_file train.csv --model_file model.pkl
+Contruimos nuestro docker:
 
-docker run --rm -v %cd%:/app --name train-predict train-predict python predict.py --input_file test.csv --model_file model.pkl --predictions_file submission.csv
+    docker build -t train-predict .  
+
+Ejecutamos el codigo para entrenar un modelo:
+
+    docker run --rm -v %cd%:/app --name train-predict train-predict python train.py --data_file train.csv --model_file model.pkl
+Esto puede tomar unos minutos.
+
+Finalmente ejecutamos el siguiente comando para predecir con el modelo generado anteriormente:
+
+    docker run --rm -v %cd%:/app --name train-predict train-predict python predict.py --input_file test.csv --model_file model.pkl --predictions_file submission.csv
