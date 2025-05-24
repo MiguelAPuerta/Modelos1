@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from loguru import logger
 
 def rename(df, located, name):
     df.loc[located, 'ESTU_PRGM_ACADEMICO'] = name
@@ -213,6 +214,7 @@ def clean_train_input(df):
     train = train.drop('ID', axis=1)
   if 'ESTU_PRIVADO_LIBERTAD' in train.columns:
     train = train.drop('ESTU_PRIVADO_LIBERTAD', axis=1)
+  logger.info("Halfway through cleaning")
   mapping_train(train)
 
   train = onehot(train, 'ESTU_PRGM_DEPARTAMENTO')
@@ -236,7 +238,7 @@ def clean_predict_data(test):
     test = test.drop('ID', axis=1)
   if 'ESTU_PRIVADO_LIBERTAD' in test.columns:
     test = test.drop('ESTU_PRIVADO_LIBERTAD', axis=1)
-
+  logger.info("Halfway through cleaning")
   mapping(test)
 
   test = onehot(test, 'ESTU_PRGM_DEPARTAMENTO')
