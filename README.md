@@ -21,3 +21,20 @@ Esto puede tomar unos minutos.
 Finalmente ejecutamos el siguiente comando para predecir con el modelo generado anteriormente:
 
     docker run --rm -v %cd%:/app --name train-predict train-predict python predict.py --input_file test.csv --model_file model.pkl --predictions_file submission.csv
+
+# Fase 3
+
+Descargar la carpeta de la fase tres, dentro de esta misma se deberan colocar train.csv y test.csv que se dan como ejemplo para la competición, estos se pueden encontrar en:
+https://www.kaggle.com/competitions/udea-ai4eng-20241/data
+
+Contruimos nuestro docker:
+
+    docker build -t apirest-train .
+
+Ejecutamos el contenedor dejando expuesto el puerto 5001
+
+    docker run -it -p 5001:5000 apirest-train
+
+Finalmente en otra terminal ejecutamos el siguiente comando.
+
+    python client.py
