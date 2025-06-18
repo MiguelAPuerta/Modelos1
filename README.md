@@ -22,6 +22,8 @@ Finalmente ejecutamos el siguiente comando para predecir con el modelo generado 
 
     docker run --rm -v %cd%:/app --name train-predict train-predict python predict.py --input_file test.csv --model_file model.pkl --predictions_file submission.csv
 
+Tambien se tiene un metodo clean dentro limpiar el data input que se le da al sistema, ya que el input inicial contiene columnas duplicadas, informacion mal organizada, datos nulos y datos que toman mas tiempo para analizar durante el fitting, por tanto el metodo clean se encargara de limpiar el input inicial que se tiene en el sistema usando una manera especifica de limpieza, este metodo viene predefinido como true, pero se puede usar falsa si el data input dado ya esta limpiado y esta listo para entrenar directamente.
+
 # Fase 3
 
 Descargar la carpeta de la fase tres, dentro de esta misma se deberan colocar train.csv y test.csv que se dan como ejemplo para la competición, estos se pueden encontrar en:
@@ -38,3 +40,5 @@ Ejecutamos el contenedor dejando expuesto el puerto 5001
 Finalmente en otra terminal ejecutamos el siguiente comando.
 
     python client.py
+
+Tambien se tiene un metodo clean dentro limpiar el data input que se le da al sistema, ya que el input inicial contiene columnas duplicadas, informacion mal organizada, datos nulos y datos que toman mas tiempo para analizar durante el fitting, por tanto el metodo clean se encargara de limpiar el input inicial que se tiene en el sistema usando una manera especifica de limpieza, este metodo viene predefinido como true, pero se puede usar falsa si el data input dado ya esta limpiado y esta listo para entrenar directamente.
