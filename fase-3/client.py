@@ -1,33 +1,47 @@
 import requests
 
+
 # Train
-# Define the JSON body
-payload = {
-    'data_file': "train.csv",
-    "model_file": "model.pkl",               # previously trained model path
-    "clean": True                            # optional; defaults to True
-}
+# Open the CSV file you want to upload
+with open('train.csv', 'rb') as f:
+    # Prepare multipart/form-data payload
+    files = {
+        'data_file': f  # field name must match Flask's `request.files['data_file']`
+    }
 
-# Send POST request
-endpoint = 'http://localhost:5001/train'
-response = requests.post(endpoint, json=payload)
+    data = {
+        'model_file': 'model.pkl',    # Just a name for the output model file
+        "clean": True                 # optional; defaults to True
+    }
 
-# Print response
-print("train", response.json())
+    # Send POST request to the Flask server
+    response = requests.post('http://localhost:5001/train', files=files, data=data)
+
+    # Print the response
+    try:
+        print("Server response:", response.status_code, response.json())
+    except Exception as e:
+        print("Failed to parse JSON:", e)
+        print("Raw response:", response.text)
 
 
 # Predict
-# Define the JSON body
-payload = {
-    "input_file": "test.csv",          # path to input CSV on the server
-    "prediction_file": "prediction.csv",    # desired output file path
-    "model_file": "model.pkl",               # previously trained model path
-    "clean": True                            # optional; defaults to True
-}
+# Open the files
+with open('test.csv', 'rb') as f:
+    files = {
+        'input_file': f,           # path to input CSV
+    }
 
-# Send POST request
-endpoint = 'http://localhost:5001/predict'
-response = requests.post(endpoint, json=payload)
+    data = {
+        'model_file': "model.pkl",              # previously trained model path
+        "prediction_file": "prediction.csv",    # desired output file path
+        "clean": True                           # Optional form field
+    }
 
-# Print response
-print("predict", response.json())
+    response = requests.post('http://localhost:5001/predict', files=files, data=data)
+
+    try:
+        print("Server response:", response.status_code, response.json())
+    except Exception as e:
+        print("Failed to parse JSON:", e)
+        print("Raw response:", response.text)

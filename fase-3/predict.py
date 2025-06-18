@@ -1,39 +1,14 @@
-import argparse
-import numpy as np
-import os
 import pandas as pd
 import pickle
 from loguru import logger
 import cleaning
 
+global predict_status
 
-def predict_model(input_file, predictions_file, model_file, clean=True):
-    global predict_status
+def predict_model(input_file, predictions_file, model_file, clean):
     try:
         predict_status = "predicting"
         logger.info("Prediction started")
-
-        #parser = argparse.ArgumentParser()
-        #parser.add_argument('--input_file', required=True, type=str, help='a csv file with input data (no targets)')
-        #parser.add_argument('--predictions_file', required=True, type=str, help='a csv file where predictions will be saved to')
-        #parser.add_argument('--model_file', required=True, type=str, help='a pkl file with a model already stored (see train.py)')
-        #parser.add_argument('--clean_data', default=True, action='store_true', help='if the set of data isn\'t clear and needs to be cleaned first (default it\'s true to clean the input)')
-
-        #args = parser.parse_args()
-
-        #input_file        = args.input_file
-        #predictions_file = args.predictions_file
-        #model_file       = args.model_file
-        #clean = args.clean_data
-
-        if not os.path.isfile(model_file):
-            logger.error(f"Model file {model_file} does not exist")
-            exit(-1)
-
-        if not os.path.isfile(input_file):
-            logger.error(f"Input file {input_file} does not exist")
-            exit(-1)
-
 
         logger.info("Loading input data")
         predict_df = pd.read_csv(input_file)
@@ -46,7 +21,7 @@ def predict_model(input_file, predictions_file, model_file, clean=True):
         values = predict_df.values
 
         logger.info("Loading model")
-        with open('model.pkl', 'rb') as f:
+        with open(model_file, 'rb') as f:
             m = pickle.load(f)
 
         logger.info("Making predictions")
@@ -64,6 +39,7 @@ def predict_model(input_file, predictions_file, model_file, clean=True):
         submission['RENDIMIENTO_GLOBAL'] = submission['RENDIMIENTO_GLOBAL'].map(mapeo)
 
         logger.info(f"Saving predictions to {predictions_file}")
+        logger.info(submission.head().to_dict(orient='records'))
         submission.to_csv(predictions_file, index=False)
     except Exception as e:
         logger.error(f"predicting failed: {e}")
